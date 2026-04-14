@@ -48,7 +48,7 @@ INSERT INTO Candidatos (digito_candidatos, nome_candidato, partido_candidatos) V
 (99, 'Voto Nulo/Branco', 'Sem Partido');
 
 -- Inserindo Eleitores Fictícios 
-INSERT INTO Eleitores (titulo_eleitoral, nome_eleitor, endereco_eleitor, CPF_Eleitor, dt_nascimento, email_eleitor, mesario, chave_acesso, ja_votou) VALUES 
-('004356870906', 'Ana Pereira', 'Rua das Flores, 123', '12345678909', '1990-05-15', 'ana@email.com', TRUE, 'ANPE1234', FALSE),   -- TRUE = Esta é a mesária
-('102385010671', 'Carlos Mendes', 'Avenida Central, 45', '98765432100', '1985-10-20', 'carlos@email.com', FALSE, 'CAME5678', FALSE), -- FALSE = Eleitor comum
-('203496120782', 'Beatriz Souza', 'Praça da Luz, 8', '45612378900', '2000-01-30', 'beatriz@email.com', FALSE, 'BESO9012', FALSE);
+INSERT INTO Eleitores (titulo_eleitoral, nome_eleitor, endereco_eleitor, CPF_Eleitor, dt_nascimento, chave_acesso, ja_votou) VALUES 
+('004356870906', 'Ana Pereira', 'Rua das Flores, 123', '12345678909', '1990-05-15', TRUE, 'ANPE1234', FALSE),   -- TRUE = Esta é a mesária
+('102385010671', 'Carlos Mendes', 'Avenida Central, 45', '98765432100', '1985-10-20', FALSE, 'CAME5678', FALSE), -- FALSE = Eleitor comum
+('203496120782', 'Beatriz Souza', 'Praça da Luz, 8', '45612378900', '2000-01-30', FALSE, 'BESO9012', FALSE);
