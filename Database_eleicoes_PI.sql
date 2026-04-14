@@ -15,7 +15,6 @@ CREATE TABLE Eleitores(
     endereco_eleitor VARCHAR(100) NOT NULL,
     CPF_Eleitor VARCHAR(11) NOT NULL UNIQUE,      -- UNIQUE para evitar duplicidade 
     dt_nascimento DATE NOT NULL,
-    email_eleitor VARCHAR(50) NOT NULL,
     mesario BOOLEAN NOT NULL DEFAULT FALSE,       -- Indica se é mesário 
     chave_acesso VARCHAR(50) NOT NULL,            -- Chave gerada no cadastro 
     ja_votou BOOLEAN NOT NULL DEFAULT FALSE       -- Controle para evitar voto duplo 
