@@ -12,12 +12,11 @@ CREATE TABLE Eleitores(
     id_eleitor INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     titulo_eleitoral VARCHAR(12) NOT NULL UNIQUE, -- UNIQUE para evitar duplicidade 
     nome_eleitor VARCHAR(100) NOT NULL,
-    endereco_eleitor VARCHAR(100) NOT NULL,
     CPF_Eleitor VARCHAR(11) NOT NULL UNIQUE,      -- UNIQUE para evitar duplicidade 
-    dt_nascimento DATE NOT NULL,
     mesario BOOLEAN NOT NULL DEFAULT FALSE,       -- Indica se é mesário 
     chave_acesso VARCHAR(50) NOT NULL,            -- Chave gerada no cadastro 
     ja_votou BOOLEAN NOT NULL DEFAULT FALSE       -- Controle para evitar voto duplo 
+    FOREIGN KEY id_votos REFERENCES Votos(id_votos) -- Chave Estrangeira para identificar o voto
 );
 
 -- Criação da Tabela de Candidatos
@@ -26,6 +25,7 @@ CREATE TABLE Candidatos(
     digito_candidatos INT(2) NOT NULL UNIQUE,     -- UNIQUE para evitar números iguais 
     nome_candidato VARCHAR(100) NOT NULL,
     partido_candidatos VARCHAR(100) NOT NULL
+    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
 );
 
 -- Criação da Tabela de Votos 
@@ -34,6 +34,8 @@ CREATE TABLE Votos(
     digito_candidato INT(2) NOT NULL,
     data_hora DATETIME NOT NULL,                  -- Armazena data e hora exatas do voto
     protocolo VARCHAR(50) NOT NULL UNIQUE         -- Comprovante de votação
+    FOREIGN KEY id_candidatos REFERENCES Candidatos(id_candidatos) -- Chave Estrangeira para identificar os candidatos
+    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
 );
 
 
