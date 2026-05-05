@@ -24,6 +24,8 @@ CREATE TABLE Candidatos(
     digito_candidatos INT NOT NULL UNIQUE,        
     nome_candidato VARCHAR(100) NOT NULL,
     partido_candidatos VARCHAR(100) NOT NULL
+    id_eleitor INT;
+    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
 );
 
 -- Criação da Tabela de Votos 
@@ -32,6 +34,10 @@ CREATE TABLE Votos(
     digito_candidato INT NOT NULL,
     data_hora DATETIME NOT NULL,                  -- Armazena data e hora exatas do voto
     protocolo VARCHAR(50) NOT NULL UNIQUE         -- Comprovante de votação
+    id_eleitor INT;
+    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
+    id_candidatos INT;
+    FOREIGN KEY id_candidatos REFERENCES Candidatos(id_Candidatos) -- Chave Estrangeira para identificar os Candidatos
 );
 
 -- Inserindo Candidatos Fictícios
