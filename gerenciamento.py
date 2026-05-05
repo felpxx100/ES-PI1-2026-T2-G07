@@ -8,7 +8,7 @@ def pausar_e_limpar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def validar_cpf(cpf):
-    """Verifica se o CPF informado é válido segundo as regras matemáticas do Anexo B."""
+    """Verifica se o CPF informado é válido."""
     if len(cpf) != 11 or cpf == cpf[0] * 11:
         return False
         
@@ -35,7 +35,7 @@ def validar_cpf(cpf):
     return False
 
 def validar_titulo(titulo):
-    """Verifica se o Título de Eleitor informado é válido segundo as regras do Anexo A."""
+    """Verifica se o Título de Eleitor informado é válido"""
     if len(titulo) != 12:
         return False
         
@@ -154,7 +154,7 @@ def buscar_eleitor(cursor):
     pausar_e_limpar()
 
 def listar_eleitores(cursor):
-    """Lista todos os eleitores cadastrados na base de dados."""
+    """Lista todos os eleitores cadastrados no banco de dados."""
     print("\n--- LISTA DE ELEITORES CADASTRADOS ---")
     cursor.execute("SELECT id_eleitor, nome_eleitor, CPF_Eleitor, titulo_eleitoral, mesario FROM Eleitores")
     eleitores = cursor.fetchall()
