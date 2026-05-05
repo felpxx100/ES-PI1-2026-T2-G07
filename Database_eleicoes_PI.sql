@@ -16,7 +16,6 @@ CREATE TABLE Eleitores(
     mesario BOOLEAN NOT NULL DEFAULT FALSE,       -- Indica se é mesário 
     chave_acesso VARCHAR(50) NOT NULL,            -- Chave gerada no cadastro 
     ja_votou BOOLEAN NOT NULL DEFAULT FALSE       -- Controle para evitar voto duplo 
-    FOREIGN KEY id_votos REFERENCES Votos(id_votos) -- Chave Estrangeira para identificar o voto
 );
 
 -- Criação da Tabela de Candidatos
