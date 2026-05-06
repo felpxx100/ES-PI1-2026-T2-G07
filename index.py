@@ -9,10 +9,10 @@ def pausar_e_limpar():
 
 # Conecta no banco de dados
 conexao = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="123456", 
-    database="eleicao"
+    host="BD-ACD",
+    user="BD250226131",
+    password="Bemjw8", 
+    database="BD250226131"
 )
 cursor = conexao.cursor()
 os.system('cls' if os.name == 'nt' else 'clear')
