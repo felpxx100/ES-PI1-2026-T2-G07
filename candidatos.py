@@ -17,6 +17,7 @@ def cadastrar_candidato(cursor, conexao):
 
     pausar_e_limpar()
 
+
 def editar_candidato(cursor, conexao):
      
     print("\n--- EDITAR DADOS DO CANDIDATO ---")
@@ -41,5 +42,28 @@ def editar_candidato(cursor, conexao):
         cursor.execute("UPDATE Candidatos SET nome_candidato = %s, partido_candidatos = %s WHERE digito_candidatos = %s", (novo_nome, novo_partido, digito))
         conexao.commit()
         print("\n[Sucesso] Dados do candidato atualizados!")
+
+    pausar_e_limpar()
+
+
+def remover_candidato(cursor, conexao):
+
+    print("\n--- REMOVER CANDIDATO ---")
+    digito = input("Digite o número do candidato que deseja remover: ")
+
+    cursor.execute(f"SELECT nome_candidato FROM Candidatos WHERE digito_candidatos = '{digito}'")
+    resultado = cursor.fetchall()
+
+    if len(resultado) == 0:
+        print("\n[Erro] Candidato não encontrado.")
+    else:
+        nome = resultado[0][0]
+        confirma = input(f"Tem certeza que deseja remover o candidato {nome}? (S/N): ").upper()
+        if confirma == 'S':
+            cursor.execute(f"DELETE FROM Candidatos WHERE digito_candidatos = '{digito}'")
+            conexao.commit()
+            print("\n[Sucesso] Candidato removido.")
+        else:
+            print("\nRemoção cancelada.")
 
     pausar_e_limpar()
