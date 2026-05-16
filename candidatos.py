@@ -67,3 +67,40 @@ def remover_candidato(cursor, conexao):
             print("\nRemoção cancelada.")
 
     pausar_e_limpar()
+
+def buscar_candidato(cursor):
+
+   # Busca e exibe as informações de um candidato específico.
+
+
+    print("\n--- BUSCAR CANDIDATO ---")
+    digito = input("Digite o número do candidato: ")
+
+    cursor.execute(f"SELECT nome_candidato, partido_candidatos FROM Candidatos WHERE digito_candidatos = '{digito}'")
+    resultado = cursor.fetchall()
+
+    if len(resultado) == 0:
+        print("\n[Aviso] Nenhum candidato encontrado com este número.")
+    else:
+        candidato = resultado[0]
+        print("\nRESULTADO DA BUSCA:")
+        print(f"Nome: {candidato[0]} | Partido: {candidato[1]} | Número: {digito}")
+
+    pausar_e_limpar()
+
+def listar_candidatos(cursor):
+
+    #Lista todos os candidatos cadastrados na base de dados.
+
+
+    print("\n--- LISTA DE CANDIDATOS CADASTRADOS ---")
+    cursor.execute("SELECT digito_candidatos, nome_candidato, partido_candidatos FROM Candidatos ORDER BY digito_candidatos ASC")
+    candidatos = cursor.fetchall()
+
+    if len(candidatos) == 0:
+        print("\n[Aviso] Nenhum candidato cadastrado na base de dados.")
+    else:
+        for cand in candidatos:
+            print(f"Número: {cand[0]} | Nome: {cand[1]} | Partido: {cand[2]}")
+
+    pausar_e_limpar()

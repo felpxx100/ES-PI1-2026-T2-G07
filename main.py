@@ -1,19 +1,11 @@
 import mysql.connector
 import gerenciamento
 import os
+from gerenciamento import pausar_e_limpar
+import bancodedados
 
-def pausar_e_limpar():
-    """Pausa e limpa a tela no arquivo principal."""
-    input("\n[ Pressione ENTER para continuar... ]")
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-# Conecta no banco de dados
-conexao = mysql.connector.connect(
-    host="BD-ACD",
-    user="BD250226131",
-    password="Bemjw8", 
-    database="BD250226131"
-)
+# Conecta no banco de dados usando o módulo banco.py
+conexao = bancodedados.conectar()
 cursor = conexao.cursor()
 os.system('cls' if os.name == 'nt' else 'clear')
 print("[Sistema: Conexão com banco de dados estabelecida com sucesso.]")

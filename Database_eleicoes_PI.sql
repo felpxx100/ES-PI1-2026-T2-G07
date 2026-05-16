@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS eleicao;
 USE eleicao;
 
--- Limpa as tabelas caso já existam 
+-- Limpa as tabelas caso já existam para recriar do zero
 DROP TABLE IF EXISTS Votos;
 DROP TABLE IF EXISTS Candidatos;
 DROP TABLE IF EXISTS Eleitores;
@@ -13,9 +13,9 @@ CREATE TABLE Eleitores(
     titulo_eleitoral VARCHAR(12) NOT NULL UNIQUE, 
     nome_eleitor VARCHAR(100) NOT NULL,
     CPF_Eleitor VARCHAR(11) NOT NULL UNIQUE,      
-    mesario BOOLEAN NOT NULL DEFAULT FALSE,       -- Indica se é mesário 
+    mesario BOOLEAN NOT NULL DEFAULT FALSE,       
     chave_acesso VARCHAR(50) NOT NULL,            
-    ja_votou BOOLEAN NOT NULL DEFAULT FALSE       -- Controle para evitar voto duplo 
+    ja_votou BOOLEAN NOT NULL DEFAULT FALSE       
 );
 
 -- Criação da Tabela de Candidatos
@@ -24,20 +24,20 @@ CREATE TABLE Candidatos(
     digito_candidatos INT NOT NULL UNIQUE,        
     nome_candidato VARCHAR(100) NOT NULL,
     partido_candidatos VARCHAR(100) NOT NULL
-    id_eleitor INT;
-    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
+    -- Removi a chave estrangeira de eleitor daqui, pois um candidato 
+    -- não precisa estar amarrado a um Eleitor para a tabela existir.
 );
 
 -- Criação da Tabela de Votos 
 CREATE TABLE Votos(
     id_voto INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     digito_candidato INT NOT NULL,
-    data_hora DATETIME NOT NULL,                  -- Armazena data e hora exatas do voto
-    protocolo VARCHAR(50) NOT NULL UNIQUE         -- Comprovante de votação
-    id_eleitor INT;
-    FOREIGN KEY id_eleitor REFERENCES Eleitores(id_eleitor) -- Chave Estrangeira para identificar os Eleitores
-    id_candidatos INT;
-    FOREIGN KEY id_candidatos REFERENCES Candidatos(id_Candidatos) -- Chave Estrangeira para identificar os Candidatos
+    data_hora DATETIME NOT NULL,                  
+    protocolo VARCHAR(50) NOT NULL UNIQUE,        -- CORREÇÃO: Vírgula adicionada
+    id_eleitor INT,                               -- CORREÇÃO: Trocado ; por ,
+    id_candidatos INT,                            -- CORREÇÃO: Trocado ; por ,
+    FOREIGN KEY (id_eleitor) REFERENCES Eleitores(id_eleitor),    -- CORREÇÃO: Parênteses e vírgula
+    FOREIGN KEY (id_candidatos) REFERENCES Candidatos(id_candidatos) -- CORREÇÃO: Parênteses
 );
 
 -- Inserindo Candidatos Fictícios
@@ -49,6 +49,6 @@ INSERT INTO Candidatos (digito_candidatos, nome_candidato, partido_candidatos) V
 
 -- Inserindo Eleitores Fictícios 
 INSERT INTO Eleitores (titulo_eleitoral, nome_eleitor, CPF_Eleitor, mesario, chave_acesso, ja_votou) VALUES 
-('004356870906', 'Ana Pereira', '12345678909', TRUE, 'ANPE1234', FALSE),   -- TRUE = Esta é a mesária
-('102385010671', 'Carlos Mendes', '98765432100', FALSE, 'CAME5678', FALSE), -- FALSE = Eleitor comum
+('004356870906', 'Ana Pereira', '12345678909', TRUE, 'ANPE1234', FALSE),   
+('102385010671', 'Carlos Mendes', '98765432100', FALSE, 'CAME5678', FALSE), 
 ('203496120782', 'Beatriz Souza', '45612378900', FALSE, 'BESO9012', FALSE);
