@@ -1,6 +1,23 @@
 import mysql.connector 
 import os
+from datetime import datetime
 
+# Função para registro de eventos
+def registro_evento(mensagem):
+    timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+    with open("logs_urna.txt", "a", encoding="utf-8") as f:
+        f.write(f"{timestamp} {mensagem}\n)
+
+# Realização da Zerésima
+def zerezima(cursor):
+    cursor.execute("SELECT COUNT (*) FROM Votos")
+    total_votos == 0:
+    registro_evento("Abertura: Votação iniciada com sucesso. Total de votos: 0")
+    print("Zerésima realizada. Votação inciada com sucesso.")
+else:
+    registro_evento("Alerta: Tentativa de acesso negado")
+    print("Erro: A urna não está zerada. Processo de votação não iniciado")
+    
 # Conecta no banco de dados 
 conexao = mysql.connector.connect(
     host="localhost",
@@ -12,6 +29,9 @@ cursor = conexao.cursor()
 
 # Variável de controle de loop
 opcao_relatorio = "0"
+
+# Chama a Zérezima logo após a ativação
+zerezima(cursor)
 
 while opcao_relatorio != "6":
     print("\n--- MENU DE AUDITORIA E RESULTADOS ---")
@@ -50,7 +70,7 @@ while opcao_relatorio != "6":
                 nome = candidato[1]
                 
                 # Conta votos de cada candidato um por um
-                cursor.execute(f"SELECT COUNT(*) FROM Votos WHERE digito_candidato = {digito}")
+                cursor.execute("SELECT COUNT(*) FROM Votos WHERE digito_candidato = %s", (digito,))
                 total_votos = cursor.fetchone()[0]
                 
                 print(f"Nome: {nome} | Número: {digito} | Votos: {total_votos}")
