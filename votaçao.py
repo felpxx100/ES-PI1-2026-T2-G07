@@ -74,3 +74,69 @@ def abrir_votacao(conexao, cursor):
     print("\n[Sistema] Votação aberta com sucesso!")
     pausar_e_limpar()
     return True
+
+def realizar_voto(conexao, cursor):
+    # Identifica o eleitor, valida duplo voto e regista a escolha na base de dados.
+    print("\n--- IDENTIFICAÇÃO DO ELEITOR ---")
+    titulo = input("Digite seu título de eleitor: ")
+    cpf_4 = input("Digite os 4 primeiros dígitos do seu CPF: ")
+    chave = input("Digite sua chave de acesso: ")
+
+    if validar_credenciais(cursor, titulo, cpf_4, chave, "eleitor") == False:
+        print("\n[Erro] Dados inválidos ou incorretos.")
+        registrar_log("ALERTA: Tentativa de acesso negado")
+        pausar_e_limpar()
+        return
+
+    # Verificar se o eleitor já votou para impedir voto duplo
+    cursor.execute(f"SELECT id_eleitor, ja_votou FROM Eleitores WHERE titulo_eleitoral = '{titulo}'")
+    eleitor_info = cursor.fetchall()[0]
+    id_eleitor = eleitor_info[0]
+    ja_votou = eleitor_info[1]
+
+    if ja_votou == 1:
+        print("\n[Erro] A participação deste eleitor já foi realizada.")
+        registrar_log("ALERTA: Tentativa de voto duplo")
+        pausar_e_limpar()
+        return
+
+    num_cand = input("\nDigite o número do candidato: ")
+    cursor.execute(f"SELECT nome_candidato, partido_candidatos, id_candidatos FROM Candidatos WHERE digito_candidatos = '{num_cand}'")
+    resultado_candidato = cursor.fetchall()
+
+    if len(resultado_candidato) > 0:
+        candidato = resultado_candidato[0]
+        print(f"\nVocê está votando em: {candidato[0]} ({candidato[1]})")
+        id_candidato = candidato[2]
+    else:
+        print("\nCandidato não encontrado. Você está votando NULO/BRANCO.")
+        # Assumindo que o candidato 99 é o Nulo, criado no seu SQL
+        cursor.execute("SELECT id_candidatos FROM Candidatos WHERE digito_candidatos = 99")
+        id_candidato = cursor.fetchall()[0][0]
+
+    confirma = input("Confirma o voto? (Sim/Não): ").upper()
+    
+    if confirma == "SIM":
+        # Gerar o protocolo: Letra V + 2 letras + 26 + num_candidato + 5 dígitos
+        letras = chr(random.randint(65, 90)) + chr(random.randint(65, 90))
+        numeros = str(random.randint(10000, 99999))
+        
+        # Formatar o número do candidato para garantir que tem 2 dígitos mínimos
+        num_formatado = num_cand
+        if len(num_formatado) == 1:
+            num_formatado = "0" + num_formatado
+            
+        protocolo = f"V{letras}26{num_formatado}{numeros}"
+        data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Inserir o voto e atualizar o status do eleitor
+        cursor.execute("INSERT INTO Votos (digito_candidato, data_hora, protocolo, id_eleitor, id_candidatos) VALUES (%s, %s, %s, %s, %s)", (num_cand, data_hora, protocolo, id_eleitor, id_candidato))
+        cursor.execute(f"UPDATE Eleitores SET ja_votou = TRUE WHERE id_eleitor = {id_eleitor}")
+        conexao.commit()
+
+        registrar_log("SUCESSO: Voto realizado com sucesso")
+        print(f"\n[Voto Confirmado] Guarde seu protocolo: {protocolo}")
+    else:
+        print("\nVoto cancelado pelo eleitor.")
+
+    pausar_e_limpar()
