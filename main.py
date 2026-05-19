@@ -176,4 +176,3 @@ while menup != 3:
             pausar_e_limpar()
 
 cursor.close()
-conexao.close()
