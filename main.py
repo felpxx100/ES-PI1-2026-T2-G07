@@ -1,19 +1,13 @@
-import mysql.connector
-import gerenciamento
 import os
+import bancodedados
+import gerenciamento
+import candidatos # Importa o seu novo ficheiro de candidatos
+import votacao
+import auditoria
+from gerenciamento import pausar_e_limpar # Importado para não repetir código
 
-def pausar_e_limpar():
-    """Pausa e limpa a tela no arquivo principal."""
-    input("\n[ Pressione ENTER para continuar... ]")
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-# Conecta no banco de dados
-conexao = mysql.connector.connect(
-    host="BD-ACD",
-    user="BD250226131",
-    password="Bemjw8", 
-    database="BD250226131"
-)
+# Conecta no banco de dados usando o módulo banco.py
+conexao = bancodedados.conectar()
 cursor = conexao.cursor()
 os.system('cls' if os.name == 'nt' else 'clear')
 print("[Sistema: Conexão com banco de dados estabelecida com sucesso.]")
@@ -57,21 +51,15 @@ while menup != 3:
                     case 5:
                         gerenciamento.listar_eleitores(cursor)
                     case 6:
-                        print("Função em desenvolvimento.")
-                        pausar_e_limpar()
+                        candidatos.cadastrar_candidato(cursor, conexao)
                     case 7:
-                        print("Função em desenvolvimento.")
-                        pausar_e_limpar()
+                        candidatos.editar_candidato(cursor, conexao)
                     case 8:
-                        print("Função em desenvolvimento.")
-                        pausar_e_limpar()
+                        candidatos.remover_candidato(cursor, conexao)
                     case 9:
-                        busc_cand = input("\nDigite o número do candidato: ")
-                        print("Função em desenvolvimento.")
-                        pausar_e_limpar()
+                        candidatos.buscar_candidato(cursor)
                     case 10:
-                        print("Função em desenvolvimento.")
-                        pausar_e_limpar()
+                        candidatos.listar_candidatos(cursor)
                     case 11:
                         print("Voltando ao Menu Principal...")
                         pausar_e_limpar()
@@ -89,42 +77,22 @@ while menup != 3:
                 
                 match modulo_vot:
                     case 1:
-                        print("\n--- Autenticação do Mesário ---")
-                        tit_mesario = input("Digite o título de eleitor: ")
-                        cpf_mesario = input("Digite os 4 primeiros dígitos do CPF: ")
-                        chv_mesario = input("Digite a chave de acesso: ")
-                        
-                        print("\n[ Sistema: Zerézima realizada com sucesso. ]")
-                        pausar_e_limpar()
-                        
-                        menu_urna = 0
-                        while menu_urna != 2:
-                            print("\nEscolha a opção da Urna")
-                            menu_urna = int(input("1- Votar\n2- Encerrar Sistema de Votação\n"))
-                            os.system('cls' if os.name == 'nt' else 'clear')
-                            
-                            match menu_urna:
-                                case 1:
-                                    print("\n--- Identificação do Eleitor ---")
-                                    tit_eleitor = input("Digite o título de eleitor: ")
-                                    cpf_eleitor = input("Digite os 4 primeiros dígitos do CPF: ")
-                                    chv_eleitor = input("Digite a chave de acesso: ")
-                                    
-                                    num_cand = input("\nDigite o número do candidato: ")
-                                    print("\n[ Sistema: Voto registrado! ]")
-                                    pausar_e_limpar()
-                                case 2:
-                                    print("\n--- Autenticação para Encerramento ---")
-                                    tit_mesario_enc = input("Digite o título de eleitor do mesário: ")
-                                    cpf_mesario_enc = input("Digite os 4 primeiros dígitos do CPF: ")
-                                    chv_mesario_enc = input("Digite a chave de acesso: ")
-                                    
-                                    confirma = input("\nDeseja realmente encerrar a votação? (Sim/Não): ")
-                                    print("\n[ Sistema: Votação Encerrada. ]")
-                                    pausar_e_limpar()
-                                case _:
-                                    print("Opção inválida")
-                                    pausar_e_limpar()
+                        if votacao.abrir_votacao(conexao, cursor):
+                            menu_urna = 0
+                            while menu_urna != 2:
+                                print("\nEscolha a opção da Urna")
+                                menu_urna = int(input("1- Votar\n2- Encerrar Sistema de Votação\n"))
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                
+                                match menu_urna:
+                                    case 1:
+                                        votacao.realizar_voto(conexao, cursor)
+                                    case 2:
+                                        if votacao.encerrar_votacao(conexao, cursor):
+                                            menu_urna = 2 # Força a saída do laço da urna
+                                    case _:
+                                        print("Opção inválida")
+                                        pausar_e_limpar()
                     
                     case 2:
                         menu_auditoria = 0
@@ -134,11 +102,9 @@ while menup != 3:
                             os.system('cls' if os.name == 'nt' else 'clear')
                             match menu_auditoria:
                                 case 1: 
-                                    print("Função em desenvolvimento.")
-                                    pausar_e_limpar()
+                                    auditoria.exibir_logs()
                                 case 2: 
-                                    print("Função em desenvolvimento.")
-                                    pausar_e_limpar()
+                                    auditoria.exibir_protocolos(cursor)
                                 case 3: 
                                     print("Voltando...")
                                 case _: 

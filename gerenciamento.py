@@ -1,11 +1,20 @@
 import random
 import os
 
+import random
+import os
+import time # Adicione esta linha no topo do arquivo junto com os outros imports!
+
 def pausar_e_limpar():
-    """Pausa o sistema até o usuário apertar ENTER e depois limpa o terminal."""
-    input("\n[ Pressione ENTER para continuar... ]")
-    # Limpa a tela (funciona no Windows e no Mac/Linux)
+    print("\nAguarde...")
+    time.sleep(2)  
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def pausar_para_leitura():
+    input("\n[ Pressione ENTER para voltar ao menu... ]")
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 
 def validar_cpf(cpf):
     """Verifica se o CPF informado é válido."""
