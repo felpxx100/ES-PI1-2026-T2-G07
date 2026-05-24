@@ -12,7 +12,7 @@ CREATE TABLE Eleitores(
     id_eleitor INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     titulo_eleitoral VARCHAR(12) NOT NULL UNIQUE, 
     nome_eleitor VARCHAR(100) NOT NULL,
-    CPF_Eleitor VARCHAR(11) NOT NULL UNIQUE,      
+    CPF_Eleitor VARCHAR(50) NOT NULL UNIQUE,      
     mesario BOOLEAN NOT NULL DEFAULT FALSE,       
     chave_acesso VARCHAR(50) NOT NULL,            
     ja_votou BOOLEAN NOT NULL DEFAULT FALSE       
