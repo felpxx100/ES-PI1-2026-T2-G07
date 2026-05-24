@@ -33,11 +33,9 @@ CREATE TABLE Votos(
     id_voto INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     digito_candidato INT NOT NULL,
     data_hora DATETIME NOT NULL,                  
-    protocolo VARCHAR(50) NOT NULL UNIQUE,        -- CORREÇÃO: Vírgula adicionada
-    id_eleitor INT,                               -- CORREÇÃO: Trocado ; por ,
-    id_candidatos INT,                            -- CORREÇÃO: Trocado ; por ,
-    FOREIGN KEY (id_eleitor) REFERENCES Eleitores(id_eleitor),    -- CORREÇÃO: Parênteses e vírgula
-    FOREIGN KEY (id_candidatos) REFERENCES Candidatos(id_candidatos) -- CORREÇÃO: Parênteses
+    protocolo VARCHAR(50) NOT NULL UNIQUE,        
+    id_candidatos INT,                            
+    FOREIGN KEY (id_candidatos) REFERENCES Candidatos(id_candidatos) 
 );
 
 -- Inserindo Candidatos Fictícios
