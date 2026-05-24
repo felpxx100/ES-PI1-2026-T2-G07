@@ -47,3 +47,40 @@ def estatistica_comparecimento(cursor):
     print(f"Total de eleitores que votaram: {total_votaram}")
     print(f"Percentual de comparecimento: {percentual:.2f}%")
     pausar_para_leitura()
+
+def votos_por_partido(cursor):
+    """Soma e exibe os votos agrupados por legenda partidária."""
+    print("\n--- VOTOS POR PARTIDO ---")
+    cursor.execute("""
+        SELECT c.partido_candidatos, COUNT(v.id_voto)
+        FROM Candidatos c
+        JOIN Votos v ON c.id_candidatos = v.id_candidatos
+        GROUP BY c.partido_candidatos
+        ORDER BY COUNT(v.id_voto) DESC
+    """)
+    resultados = cursor.fetchall()
+    
+    if len(resultados) == 0:
+        print("Nenhum voto computado para partidos.")
+    else:
+        for linha in resultados:
+            print(f"Partido: {linha[0]} | Total de Votos: {linha[1]}")
+    pausar_para_leitura()
+
+def validacao_integridade(cursor):
+    """Compara o número de votos registrados fisicamente na tabela com os eleitores com status TRUE."""
+    print("\n--- VALIDAÇÃO DE INTEGRIDADE ---")
+    cursor.execute("SELECT COUNT(*) FROM Votos")
+    total_votos_urna = cursor.fetchall()[0][0]
+    
+    cursor.execute("SELECT COUNT(*) FROM Eleitores WHERE ja_votou = TRUE")
+    total_eleitores_votaram = cursor.fetchall()[0][0]
+    
+    print(f"Total de votos armazenados: {total_votos_urna}")
+    print(f"Total de eleitores marcados como 'Já Votou': {total_eleitores_votaram}")
+    
+    if total_votos_urna == total_eleitores_votaram:
+        print("\n[Status] INTEGRIDADE CONFIRMADA. O processo ocorreu sem divergências.")
+    else:
+        print("\n[Status] ALERTA DE DIVERGÊNCIA! A auditoria falhou.")
+    pausar_para_leitura()
