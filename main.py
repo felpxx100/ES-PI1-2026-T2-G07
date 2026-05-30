@@ -5,7 +5,7 @@ import candidatos # Importa o seu novo ficheiro de candidatos
 import votacao
 import auditoria
 from gerenciamento import pausar_e_limpar # Importado para não repetir código
-import resultados
+import resultado
 
 
 # Conecta no banco de dados usando o módulo banco.py
@@ -125,13 +125,13 @@ while menup != 3:
                             os.system('cls' if os.name == 'nt' else 'clear')
                             match menu_resultados:
                                 case 1: 
-                                    resultados.boletim_urna(cursor)
+                                    resultado.boletim_urna(cursor)
                                 case 2: 
-                                    resultados.estatistica_comparecimento(cursor)
+                                    resultado.estatistica_comparecimento(cursor)
                                 case 3: 
-                                    resultados.votos_por_partido(cursor)
+                                    resultado.votos_por_partido(cursor)
                                 case 4: 
-                                    resultados.validacao_integridade(cursor)
+                                    resultado.validacao_integridade(cursor)
                                 case 5: 
                                     print("Voltando...")
                                 case _: 

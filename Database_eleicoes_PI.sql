@@ -38,15 +38,3 @@ CREATE TABLE Votos(
     FOREIGN KEY (id_candidatos) REFERENCES Candidatos(id_candidatos) 
 );
 
--- Inserindo Candidatos Fictícios
-INSERT INTO Candidatos (digito_candidatos, nome_candidato, partido_candidatos) VALUES 
-(10, 'Alan Turing', 'PDC (Partido da Computação)'),
-(20, 'Ada Lovelace', 'PAL (Partido dos Algoritmos)'),
-(30, 'Grace Hopper', 'PBD (Partido do Banco de Dados)'),
-(99, 'Voto Nulo/Branco', 'Sem Partido');
-
--- Inserindo Eleitores Fictícios 
-INSERT INTO Eleitores (titulo_eleitoral, nome_eleitor, CPF_Eleitor, mesario, chave_acesso, ja_votou) VALUES 
-('004356870906', 'Ana Pereira', '12345678909', TRUE, 'ANPE1234', FALSE),   
-('102385010671', 'Carlos Mendes', '98765432100', FALSE, 'CAME5678', FALSE), 
-('203496120782', 'Beatriz Souza', '45612378900', FALSE, 'BESO9012', FALSE);

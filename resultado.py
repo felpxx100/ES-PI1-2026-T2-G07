@@ -22,8 +22,13 @@ def boletim_urna(cursor):
             vencedor = linha
             
     if vencedor != None and maior_voto > 0:
-        print("\n--- VENCEDOR DA ELEIÇÃO ---")
-        print(f"Nome: {vencedor[0]} | Número: {vencedor[1]} | Partido: {vencedor[2]} | Total de Votos: {maior_voto}")
+        # CORREÇÃO: Verifica se quem venceu foi o Voto Nulo (Dígito 99)
+        if vencedor[1] == 99:
+            print("\n--- RESULTADO DA ELEIÇÃO ---")
+            print(f"Não houve vencedor. A maioria dos eleitores ({maior_voto} votos) votou Nulo/Branco.")
+        else:
+            print("\n--- VENCEDOR DA ELEIÇÃO ---")
+            print(f"Nome: {vencedor[0]} | Número: {vencedor[1]} | Partido: {vencedor[2]} | Total de Votos: {maior_voto}")
     else:
         print("\nNenhum voto foi registrado ou houve empate absoluto (0 votos).")
         
@@ -51,17 +56,18 @@ def estatistica_comparecimento(cursor):
 def votos_por_partido(cursor):
     """Soma e exibe os votos agrupados por legenda partidária."""
     print("\n--- VOTOS POR PARTIDO ---")
+    # CORREÇÃO: O LEFT JOIN garante que partidos com 0 votos também apareçam
     cursor.execute("""
         SELECT c.partido_candidatos, COUNT(v.id_voto)
         FROM Candidatos c
-        JOIN Votos v ON c.id_candidatos = v.id_candidatos
+        LEFT JOIN Votos v ON c.id_candidatos = v.id_candidatos
         GROUP BY c.partido_candidatos
         ORDER BY COUNT(v.id_voto) DESC
     """)
     resultados = cursor.fetchall()
     
     if len(resultados) == 0:
-        print("Nenhum voto computado para partidos.")
+        print("Nenhum partido cadastrado no sistema.")
     else:
         for linha in resultados:
             print(f"Partido: {linha[0]} | Total de Votos: {linha[1]}")
@@ -84,3 +90,4 @@ def validacao_integridade(cursor):
     else:
         print("\n[Status] ALERTA DE DIVERGÊNCIA! A auditoria falhou.")
     pausar_para_leitura()
+    
