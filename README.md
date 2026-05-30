@@ -2,12 +2,16 @@
 
 O LAD.Py é o backend de um sistema de votação digital fictício executado via terminal de comandos. Este projeto foi concebido com finalidade estritamente didática para a disciplina de Projeto Integrador I (Engenharia de Software - PUC Campinas). O sistema permite o cadastramento e gestão de eleitores e candidatos, abertura de urna com processo de zerézima, validação de votação para impedir voto duplo, auditoria através de logs de ocorrências e geração de boletim de urna.
 
-Nome dos integrantes
+Nome dos integrantes:
 
 Eduardo Teixeira
+
 Felipe Ferraz
-João Vitor Iha
+
 Gabriel Gambaroni
+
+João Vitor Iha
+
 Luiz Felipe Viotto Martins
 
 Tecnologias utilizadas:
